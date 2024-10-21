@@ -54,7 +54,7 @@ const eventChart = new Chart(ctx, {
   },
 })
 
-//CAROUSEL
+// CAROUSEL
 let currentSlide = 0
 const totalSlides = document.querySelectorAll('.carousel-item').length
 const dots = document.querySelectorAll('.dot')
@@ -304,9 +304,56 @@ const placeholderData = [
 ]
 
 // Function to render the table rows based on the placeholder data
-let rowsPerPage = 10 // Default value is 10 rows per page
+let rowsPerPage = 10
 let currentPage = 1
 let totalPages = Math.ceil(placeholderData.length / rowsPerPage)
+
+// Function to populate the speaker dropdown
+function populateSpeakerDropdown() {
+  const speakerDropdown = document.getElementById('speakerFilter')
+
+  // Create a Set to avoid duplicate speaker names
+  const speakers = new Set(placeholderData.map((event) => event.speaker))
+
+  // Populate the dropdown
+  speakers.forEach((speaker) => {
+    const option = document.createElement('option')
+    option.value = speaker
+    option.textContent = speaker
+    speakerDropdown.appendChild(option)
+  })
+}
+
+// Function to filter events based on the selected speaker
+function filterBySpeaker(speaker) {
+  // Get the original placeholder data to reset if no speaker is selected
+  const originalData = [...placeholderData]
+
+  if (speaker) {
+    // Filter based on selected speaker
+    return originalData.filter((event) => event.speaker === speaker)
+  }
+  // Return all data if no speaker is selected
+  return originalData
+}
+
+// Event listener for the speaker dropdown change
+document
+  .getElementById('speakerFilter')
+  .addEventListener('change', function () {
+    const selectedSpeaker = this.value
+
+    // Get the filtered data based on selected speaker
+    const filteredEvents = filterBySpeaker(selectedSpeaker)
+
+    // Now call the render function with the filtered data
+    renderTableRows(currentPage, filteredEvents)
+  })
+
+// Call the function to populate the speaker dropdown when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+  populateSpeakerDropdown() // Populate the speaker dropdown
+})
 
 function renderTableRows(page = 1) {
   tableBody.innerHTML = ''
@@ -321,15 +368,14 @@ function renderTableRows(page = 1) {
 
     const row = document.createElement('tr')
     row.innerHTML = `
-      <td class="event-name">${event.eventName}</td>
+    <td class="event-name" onclick="toggleDetails(this)">${event.eventName}</td>
       <td>${event.date}</td>
       <td>${event.speaker}</td>
-      <td>
+      <td class=>
         <ul class="status-list">
           <li><span class="badge ${statusBadgeClass}">${event.status}</span></li>
         </ul>
-      </td>
-    `
+      </td> `
 
     // Add event listener to open modal when the event name is clicked
     row
@@ -390,8 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderTableRows(currentPage)
 })
 
-
-// THEME TOGGLE
+// THEME TOGGLE DARK AND LIGHT MODE
 const darkModeToggle = document.getElementById('dark-mode-toggle')
 const darkModeIcon = document.getElementById('dark-mode-icon')
 const body = document.body
@@ -429,10 +474,7 @@ darkModeToggle.addEventListener('click', (e) => {
   }
 })
 
-
-
-
-// Function to hide search icon when typing
+// FUNCTION TO HIDE SEARCH ICON WHEN TYPING
 const searchInput = document.getElementById('searchInput')
 const searchIcon = document.getElementById('searchIcon')
 
@@ -443,8 +485,6 @@ searchInput.addEventListener('input', () => {
     searchIcon.classList.remove('hidden') // Show icon when input is empty
   }
 })
-
-
 //  hides the icon when the input is focused
 searchInput.addEventListener('focus', () => {
   searchIcon.classList.add('hidden')
@@ -456,45 +496,39 @@ searchInput.addEventListener('blur', () => {
   }
 })
 
-
-
 // MODAL
-const modal = document.querySelector('.modal');
-const closeModalButton = document.querySelector('.modal-close');
-const tableBody = document.getElementById('events-table-body');
-const backdrop = document.querySelector('.modal-backdrop'); // Move backdrop selector outside
+const modal = document.querySelector('.modal')
+const closeModalButton = document.querySelector('.modal-close')
+const tableBody = document.getElementById('events-table-body')
+const backdrop = document.querySelector('.modal-backdrop') // Move backdrop selector outside
 
 // Function to open the modal
 function openModal(eventData) {
   // Update modal content with the clicked event's details
-  modal.querySelector('h3').innerText = eventData.eventName;
-  modal.querySelector('.modal-header p').innerText = eventData.date;
-  modal.querySelector('.modal-event-des').innerText = "Event Description";
-  
+  modal.querySelector('h3').innerText = eventData.eventName
+  modal.querySelector('.modal-header p').innerText = eventData.date
+  modal.querySelector('.modal-event-des').innerText = 'Event Description'
+
   // Show the modal and backdrop
-  modal.style.display = 'block';
-  backdrop.style.display = 'block';
+  modal.style.display = 'block'
+  backdrop.style.display = 'block'
 }
 
 // Function to close the modal
 function closeModal() {
-  modal.style.display = 'none';
-  backdrop.style.display = 'none';
+  modal.style.display = 'none'
+  backdrop.style.display = 'none'
 }
 
-// Event listener to close modal when clicking outside of it
 window.onclick = function (event) {
   // Check if the click is outside the modal or on the backdrop
   if (event.target === modal || event.target === backdrop) {
-    closeModal();
+    closeModal()
   }
-};
+}
 
 // Close modal when the close button is clicked
-closeModalButton.addEventListener('click', closeModal);
-
-
-
+closeModalButton.addEventListener('click', closeModal)
 
 // COLLAPSED SIDEBAR
 document
@@ -558,19 +592,19 @@ document
             icon.src = 'assets/icons/solar_user-speak-rounded-linear.svg' // Expanded icon for Speakers
             break
           case 'Reports Icon':
-            icon.src = 'assets/icons/solar_document-linear.svg' // Expanded icon for Reports
+            icon.src = 'assets/icons/solar_document-linear.svg'
             break
           case 'Notifications Icon':
-            icon.src = 'assets/icons/bell (1).svg' // Expanded icon for Notifications
+            icon.src = 'assets/icons/bell (1).svg'
             break
           case 'Messages Icon':
-            icon.src = 'assets/icons/double-chat-bubble.svg' // Expanded icon for Messages
+            icon.src = 'assets/icons/double-chat-bubble.svg'
             break
           case 'Settings Icon':
-            icon.src = 'assets/icons/settings-2.svg' // Expanded icon for Settings
+            icon.src = 'assets/icons/settings-2.svg'
             break
           case 'Collapse Icon':
-            icon.src = 'assets/icons/double-chevron-left.svg' // Switch icon for expanded state
+            icon.src = 'assets/icons/double-chevron-left.svg'
             break
           default:
             break
@@ -579,7 +613,244 @@ document
     }
   })
 
+// EVENT LIST ON MOBILE
+function renderEventList() {
+  const eventList = document.querySelector('.event-list')
+  eventList.innerHTML = ''
+
+  let currentlyOpen = null // Variable to track the currently open event
+
+  placeholderData.forEach((event) => {
+    const BadgeClass =
+      event.status === 'Completed' ? 'badge-Success' : 'badge-Info'
+
+    const listItem = document.createElement('li')
+    listItem.innerHTML = `
+    <div class="mobile-event-list">
+      <div class="mobile-event-name">
+        <img src="assets/icons/chevron-right.svg" alt="Event Image" class="event-icon" /> 
+        <p class="speaker-names">${event.eventName}</p>
+      </div> 
+      <div class="mobile-event-status">
+        <span id="mobile-status" class="${BadgeClass}">${event.status}</span>
+      </div>
+    </div>
+    <div class="mobile-event-speaker-date">
+      <span>${event.speaker}</span>
+      <span>${event.date}</span>
+    </div>
+    `
+
+    // Append the list item to the ul
+    eventList.appendChild(listItem)
+
+      listItem
+        .querySelector('.speaker-names')
+        .addEventListener('click', () => openModal(event))
+
+    // Get elements for interactivity
+    const eventIcon = listItem.querySelector('.event-icon')
+    const speakerDate = listItem.querySelector('.mobile-event-speaker-date')
+    const eventListDiv = listItem.querySelector('.mobile-event-list')
+
+    // Add click event listener to the image (eventIcon)
+    eventIcon.addEventListener('click', () => {
+      // Close the currently open event if it's not the one being clicked
+      if (currentlyOpen && currentlyOpen !== listItem) {
+        const openIcon = currentlyOpen.querySelector('.event-icon')
+        const openSpeakerDate = currentlyOpen.querySelector(
+          '.mobile-event-speaker-date'
+        )
+        const openEventListDiv =
+          currentlyOpen.querySelector('.mobile-event-list')
+
+        openSpeakerDate.style.display = 'none' // Hide the previously opened details
+        openIcon.src = 'assets/icons/chevron-right.svg' // Reset the icon to chevron-right
+        openEventListDiv.classList.remove('active') // Reset the background color
+      }
+
+      // Toggle the clicked event's details
+      const isOpen = speakerDate.style.display === 'flex'
+      speakerDate.style.display = isOpen ? 'none' : 'flex' // Toggle visibility
+      eventIcon.src = isOpen
+        ? 'assets/icons/chevron-right.svg'
+        : 'assets/icons/chevron-down.svg' // Toggle icon to chevron-down when open
+      eventListDiv.classList.toggle('active', !isOpen) // Toggle background color
+
+      // Update the currently open event if the clicked event was not already open
+      currentlyOpen = isOpen ? null : listItem
+    })
+  })
+}
 
 
+// Call the function when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+  renderEventList()
+})
 
+
+document.addEventListener('click', ()=>{
+
+})
+
+// MOBILE SIDEBAR
+const hamburgerToggle = document.getElementById('hamburger-toggle')
+const mobileSidebar = document.querySelector('.mobile-sidebar')
+const sidebarCloseButton = document.querySelector('.mobile-sidebar-close')
+
+hamburgerToggle.addEventListener('click', () => {
+  mobileSidebar.classList.toggle('show-sidebar')
+  if (mobileSidebar.classList.contains('show-sidebar')) {
+    mobileSidebar.style.display = 'flex'
+  } else {
+    mobileSidebar.style.display = 'none'
+  }
+})
+
+sidebarCloseButton.addEventListener('click', () => {
+  mobileSidebar.classList.remove('show-sidebar')
+  mobileSidebar.style.display = 'none'
+})
+
+//dark mode for the mobile sidebar
+const mobiledarkModeToggle = document.getElementById('mobile-dark-mode-toggle')
+const mobiledarkModeIcon = document.getElementById('mobile-dark-mode-icon')
+const pageBody = document.body // Reference to the body element
+
+// Function to enable dark mode
+const enableMobileDarkMode = () => {
+  pageBody.classList.add('mobile-dark-mode') // Add the dark mode class
+  mobiledarkModeIcon.src = 'assets/icons/dark-mode-icon.svg'
+  localStorage.setItem('mobileDarkMode', 'enabled')
+}
+
+// Function to disable dark mode
+const disableMobileDarkMode = () => {
+  pageBody.classList.remove('mobile-dark-mode') // Remove the dark mode class
+  mobiledarkModeIcon.src = 'assets/icons/Base Switch.svg'
+  localStorage.setItem('mobileDarkMode', 'disabled')
+}
+
+// Check the saved dark mode state in localStorage on page load
+if (localStorage.getItem('mobileDarkMode') === 'enabled') {
+  enableMobileDarkMode()
+} else {
+  disableMobileDarkMode()
+}
+
+// Toggle dark mode when the user clicks the dark mode button
+mobiledarkModeToggle.addEventListener('click', (e) => {
+  e.preventDefault()
+
+  if (pageBody.classList.contains('mobile-dark-mode')) {
+    disableMobileDarkMode()
+  } else {
+    enableMobileDarkMode()
+  }
+})
+
+// TABLE FILTERING AND SORTING
+let filteredData = [...placeholderData] 
+
+// filtering by search input
+document.querySelector('#searchInput').addEventListener('input', function () {
+  const searchTerm = this.value.toLowerCase()
+  filteredData = placeholderData.filter((event) =>
+    event.eventName.toLowerCase().includes(searchTerm)
+  )
+  updatePaginationAndRender() // Update pagination and display data.
+})
+
+// filtering by date
+document
+  .querySelector('[aria-label="Filter by Date"]')
+  .addEventListener('change', function () {
+    const sortBy = this.value
+    if (sortBy === '1') {
+      filteredData = [...placeholderData].sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      )
+    } else if (sortBy === '2') {
+      filteredData = [...placeholderData].sort(
+        (a, b) => new Date(a.date) - new Date(b.date)
+      )
+    }
+    updatePaginationAndRender() 
+  })
+
+//  filtering by status
+document
+  .querySelector('[aria-label="Filter by Status"]')
+  .addEventListener('change', function () {
+    const statusFilter = this.value
+    if (statusFilter === '1') {
+      filteredData = placeholderData.filter(
+        (event) => event.status === 'Completed'
+      )
+    } else if (statusFilter === '2') {
+      filteredData = placeholderData.filter(
+        (event) => event.status === 'In Progress'
+      )
+    }
+    updatePaginationAndRender()
+  })
+
+// filtering by sorting the newest
+document
+  .querySelector('.sort-group select')
+  .addEventListener('change', function () {
+    const sortBy = this.value
+    if (sortBy === '1') {
+      filteredData = [...placeholderData].sort(
+        (a, b) => new Date(a.date) - new Date(b.date)
+      ) // Oldest first
+    } else {
+      filteredData = [...placeholderData].sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      ) // Newest first
+    }
+    updatePaginationAndRender() // Update pagination and display data.
+  })
+
+  function updatePaginationAndRender() {
+    totalPages = Math.ceil(filteredData.length / rowsPerPage)
+    if (currentPage > totalPages) {
+      currentPage = totalPages
+    }
+
+    // Re-render pagination
+    updatePaginationDisplay()
+
+    // Render the filtered rows with pagination
+    renderFilteredRows(filteredData)
+  }
+
+
+  
+
+// Re-rendering the table with filtered/sorted data
+function renderFilteredRows(filteredData) {
+  const start = (currentPage - 1) * rowsPerPage
+  const end = start + rowsPerPage
+  const eventsToShow = filteredData.slice(start, end)
+
+  tableBody.innerHTML = ''
+  eventsToShow.forEach((event) => {
+    const statusBadgeClass =
+      event.status === 'Completed' ? 'badge-success' : 'badge-info'
+    const row = document.createElement('tr')
+    row.innerHTML = `
+      <td class="event-name" onclick="toggleDetails(this)">${event.eventName}</td>
+      <td>${event.date}</td>
+      <td>${event.speaker}</td>
+      <td>
+        <ul class="status-list">
+          <li><span class="badge ${statusBadgeClass}">${event.status}</span></li>
+        </ul>
+      </td>
+    `
+    tableBody.appendChild(row)
+  })
+}
 
