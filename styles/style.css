@@ -1,3 +1,6 @@
+/* ===================
+   GENERAL STYLES 
+===================== */
 * {
   margin: 0;
 }
@@ -11,7 +14,9 @@ body {
   min-height: 100vh;
 }
 
-/* Sidebar */
+/* ===================
+    SIDEBAR 
+===================== */
 .sidebar {
   width: 240px;
   height: 1024px;
@@ -19,22 +24,18 @@ body {
   border-right: 1px solid #f1f5f9;
   padding: 8px;
   gap: 8px;
-  transition: width 0.3s ease;
+  transition: background-color 0.3s, padding 0.3s;
 }
-
 .sidebar ul {
   list-style: none;
   padding: 0;
 }
-
 .sidebar ul li {
-  width: 224px;
   height: 36px;
   border-radius: 2px;
   padding: 6px;
   gap: 16px;
 }
-
 .sidebar ul li a {
   color: #334155;
   text-decoration: none;
@@ -47,31 +48,37 @@ body {
   border-radius: 5px;
   font-size: 14px;
   transition: background-color 0.3s;
-}
-
-#notifications {
-  display: flex;
-  align-items: center;
+  padding: 8px;
 }
 
 .messages-number {
   padding-left: 50px;
 }
 
-/* collapsed sidebar */
-
-.sidebar.collapsed {
-  width: 64px;
+.sidebar ul li a:hover {
+  background-color: #f1f5f9;
 }
 
+.sidebar ul li.active a {
+  background-color: #fcf7ff;
+}
+
+.sidebar ul li.active a img {
+  content: url('/assets/icons/home\ \(1\).svg');
+}
+
+/* collapsed sidebar */
+.sidebar.collapsed {
+  width: 200px;
+}
 .sidebar.collapsed nav ul li a span {
   display: none;
 }
 
 .sidebar nav ul li a img {
-  margin-right: 30px;
+  /* margin-right: 30px; */
+  align-items: center;
 }
-
 .sidebar.collapsed nav ul li a img {
   margin-right: 0;
 }
@@ -80,20 +87,21 @@ body {
 .close-btn {
   display: none;
   position: absolute;
-  top: 15px; 
-  right: 10px; 
+  top: 15px;
+  right: 10px;
   background: none;
   border: none;
-  font-size: 15px; 
+  font-size: 15px;
   cursor: pointer;
-  
 }
 
 .sidebar.show .close-btn {
   display: block; /* Show when sidebar is open on mobile view*/
 }
 
-/* Main Content Area */
+/* ===================
+   MAIN CONTENT STYLES 
+===================== */
 .content {
   flex: 1;
   padding: 20px;
@@ -119,7 +127,7 @@ header {
 .card {
   padding: 16px;
   border-radius: 2px;
-  transition: transform 0.3s; /* Animation */
+  transition: transform 0.3s;
   text-align: left;
   border: 1px solid #f2f2f7;
   gap: 16px;
@@ -171,7 +179,9 @@ header {
   display: flex;
 }
 
-/* CAROUSEL */
+/* ===================
+   CHART AND CAROUSEL
+===================== */
 .chart-heading {
   font-size: 18px;
   font-weight: 500;
@@ -288,7 +298,9 @@ button.next {
   background-color: #ffffff;
 }
 
-/* EVENTS */
+/* ===================
+   EVENT LIST STYLES 
+===================== */
 .event-filter-container {
   display: flex;
   align-items: center;
@@ -307,19 +319,28 @@ button.next {
 
 .form-select {
   border: 1px solid #e2e8f0;
-  padding: 5px;
+  padding: 4px;
   border-radius: 2px;
+  font-size: 12px;
+}
+
+.form-select option {
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: left;
+  color: #334155;
 }
 .form-input {
   border-radius: 2px;
   border: 1px solid #e2e8f0;
   outline: none;
-  padding: 5px;
+  padding: 4px;
 }
 
 .input-group {
   display: flex;
-  column-gap: 6px;
+  column-gap: 4px;
   align-items: center;
   position: relative;
 }
@@ -327,8 +348,7 @@ button.next {
 .form-input::placeholder {
   color: #cbd5e1;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 12px;
   padding-left: 30px;
 }
 
@@ -337,8 +357,8 @@ button.next {
   top: 50%;
   left: 10px;
   transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   pointer-events: none;
 }
 
@@ -351,9 +371,8 @@ button.next {
   align-items: center;
 }
 
-.form-select option,
 .result-text {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   color: #334155;
 }
@@ -394,7 +413,9 @@ button.next {
   padding: 4px;
 }
 
-/* TABLE */
+/* ===================
+   TABLE STYLES 
+===================== */
 .table-container {
   width: 100%;
   overflow-x: auto;
@@ -407,7 +428,6 @@ button.next {
 }
 
 .styled-table thead th {
-  padding: 10px;
   background-color: #f1f5f9;
   text-align: left;
   border: none;
@@ -419,8 +439,10 @@ button.next {
 }
 
 .styled-table tbody td {
-  padding: 15px;
-  font-size: 14px;
+  padding-right: 16px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 13px;
   color: #334155;
   overflow: hidden;
   white-space: nowrap;
@@ -430,13 +452,16 @@ button.next {
 .status-list {
   list-style-type: none;
   padding-left: 0px;
+  font-size: 12px;
 }
 
 .status-list li {
   margin: 0;
 }
 
-/* Badge base style */
+/* ============================
+   STAUS-BADGE DYNAMIC STYLES 
+============================= */
 .badge {
   border-radius: 100px;
   padding: 8px 28px;
@@ -485,7 +510,9 @@ button.next {
   transform: translateY(-50%);
 }
 
-/* PAGINATION */
+/* ===================
+   PAGINATION
+===================== */
 .pagination-container {
   display: flex;
   align-items: center;
@@ -566,7 +593,9 @@ button.next {
   color: #334155;
 }
 
-/* DARK MODE STYLES */
+/* ===========================
+   DYNAMIC DARK-MODE STYLES 
+=========================== */
 body.dark-mode {
   background-color: #000000;
   color: white;
@@ -599,7 +628,9 @@ body.dark-mode .card-content h3 {
 
 body.dark-mode .canvas-container {
   background-color: #484554;
+  border-radius: 10px;
 }
+
 body.dark-mode .form-select {
   background-color: #484554;
   border: none;
@@ -619,7 +650,7 @@ body.dark-mode .sort-btn,
 body.dark-mode .sort-export-btn {
   background: #484554;
   color: #fcf7ff;
-  border:none;
+  border: none;
 }
 body.dark-mode .result-text,
 body.dark-mode #sort-text {
@@ -671,7 +702,22 @@ body.dark-mode .pagination-next {
   color: #8576ff;
 }
 
-/* MODAL */
+body.dark-mode .sidebar ul li a:hover {
+  background-color: #f1f5f9;
+}
+
+body.dark-mode .sidebar ul li.active a {
+  background-color: #8576ff;
+  color: #fcf7ff;
+}
+
+body.dark-mode .sidebar ul li.active a img {
+  content: url('/assets/icons/home.svg');
+}
+
+/* ===================
+   MODAL STYLES 
+===================== */
 .modal {
   width: 440px;
   height: 380px;
@@ -783,18 +829,15 @@ body.dark-mode .modal-btns {
   background: #8576ff;
 }
 
-/* MODAL BACKDROP */
 .modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); 
-  backdrop-filter: blur(5px); 
-  z-index: 999; 
-  display: none; 
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 999;
+  display: none;
   z-index: 999;
 }
-
-
